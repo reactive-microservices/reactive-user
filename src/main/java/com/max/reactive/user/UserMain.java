@@ -6,18 +6,18 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
 
-final class AppMain {
+final class UserMain {
 
     private static Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    private AppMain() {
+    private UserMain() {
         final Vertx vertex = Vertx.vertx();
-        vertex.deployVerticle(new MainVerticle());
+        vertex.deployVerticle(new UserVerticle());
     }
 
     public static void main(String[] args) {
         try {
-            new AppMain();
+            new UserMain();
         }
         catch (Exception ex) {
             LOG.error("Error occurred", ex);

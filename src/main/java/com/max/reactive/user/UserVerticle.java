@@ -7,10 +7,10 @@ import org.slf4j.LoggerFactory;
 import java.lang.invoke.MethodHandles;
 import java.util.concurrent.atomic.LongAdder;
 
-public class MainVerticle extends AbstractVerticle {
+public class UserVerticle extends AbstractVerticle {
 
     private static Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    private static final String VERTEX_NAME = MainVerticle.class.getCanonicalName();
+    private static final String VERTEX_NAME = UserVerticle.class.getCanonicalName();
 
     private static final LongAdder REQUESTS_COUNTER = new LongAdder();
 
@@ -23,7 +23,7 @@ public class MainVerticle extends AbstractVerticle {
             REQUESTS_COUNTER.increment();
 
 
-            request.response().end("Reactive user-service, requests = " + REQUESTS_COUNTER +
+            request.response().end("Reactive profile-service, requests = " + REQUESTS_COUNTER +
                                            " thread = '" + Thread.currentThread().getName() + "'\n");
         }).listen(PORT);
 
