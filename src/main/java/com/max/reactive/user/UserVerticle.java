@@ -23,8 +23,7 @@ public class UserVerticle extends AbstractVerticle {
             REQUESTS_COUNTER.increment();
 
 
-            request.response().end("Reactive profile-service, requests = " + REQUESTS_COUNTER +
-                                           " thread = '" + Thread.currentThread().getName() + "'\n");
+            request.response().end("User-" + REQUESTS_COUNTER + ", " + Thread.currentThread().getName() + "\n");
         }).listen(PORT);
 
         LOG.info("{} started at port {}", VERTEX_NAME, PORT);
