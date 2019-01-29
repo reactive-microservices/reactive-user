@@ -22,8 +22,9 @@ public class MainVerticle extends AbstractVerticle {
 
             REQUESTS_COUNTER.increment();
 
-            request.response().end("Hello from Vert.x with id " + REQUESTS_COUNTER +
-                                           " [" + Thread.currentThread().getName() + "]");
+
+            request.response().end("Reactive user-service, requests = " + REQUESTS_COUNTER +
+                                           " thread = '" + Thread.currentThread().getName() + "'\n");
         }).listen(PORT);
 
         LOG.info("{} started at port {}", VERTEX_NAME, PORT);

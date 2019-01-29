@@ -12,7 +12,7 @@ final class AppMain {
 
     private AppMain() {
         final Vertx vertex = Vertx.vertx();
-        vertex.deployVerticle(new MainRxVerticle());
+        vertex.deployVerticle(new MainVerticle());
     }
 
     public static void main(String[] args) {
