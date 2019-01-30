@@ -8,8 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Optional;
 
 public class UserVerticle extends AbstractVerticle {
 
@@ -17,6 +16,8 @@ public class UserVerticle extends AbstractVerticle {
     private static final String VERTEX_NAME = UserVerticle.class.getCanonicalName();
 
     private static final int PORT = 7070;
+
+    private final UserDao userDao = new InMemoryUserDao();
 
     @Override
     public void start() {
@@ -34,16 +35,30 @@ public class UserVerticle extends AbstractVerticle {
 
             String userName = request.pathParam("name");
 
-            JsonObject data = new JsonObject();
-            data.put("name", "Maksym Stepanenko");
-            data.put("nickname", userName);
-            data.put("age", 33);
-            data.put("thread", Thread.currentThread().getName());
-            data.put("hobbies", Arrays.asList("jujutsu", "programming", "reading books"));
+            Optional<UserDto> userDto = userDao.findUser(userName);
 
-            request.response().
-                    putHeader(HttpHeaders.CONTENT_TYPE, "application/json").
-                    end(data.encode());
+            if (userDto.isPresent()) {
+
+                JsonObject data = new JsonObject();
+                data.put("name", userDto.get().getName());
+                data.put("nickname", userDto.get().getNickName());
+                data.put("age", userDto.get().getAge());
+                data.put("thread", Thread.currentThread().getName());
+                data.put("hobbies", userDto.get().getHobbies());
+
+                request.response().
+                        setStatusCode(200).
+                        putHeader(HttpHeaders.CONTENT_TYPE, "application/json").
+                        end(data.encode());
+            }
+            else {
+                JsonObject errorMessage = new JsonObject();
+                errorMessage.put("message", "Can't find user with name " + userName);
+                request.response().
+                        setStatusCode(404).
+                        putHeader(HttpHeaders.CONTENT_TYPE, "application/json").
+                        end(errorMessage.encode());
+            }
         });
 
         vertx.createHttpServer().requestHandler(router::accept).listen(PORT);
