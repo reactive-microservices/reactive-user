@@ -1,5 +1,6 @@
 package com.max.reactive.user;
 
+import com.google.inject.Guice;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.JsonObject;
@@ -17,10 +18,13 @@ public class UserVerticle extends AbstractVerticle {
 
     private static final int PORT = 7070;
 
-    private final UserDao userDao = new InMemoryUserDao();
+    private UserDao userDao;
 
     @Override
     public void start() {
+
+        userDao = Guice.createInjector(new UserModule()).getInstance(UserDao.class);
+
         Router router = Router.router(vertx);
 
         router.get("/user/health").handler(request -> {

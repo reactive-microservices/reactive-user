@@ -1,10 +1,13 @@
 package com.max.reactive.user;
 
+import com.google.inject.Singleton;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Singleton
 public class InMemoryUserDao implements UserDao {
 
     private final Map<String, UserDto> users = new HashMap<>();
