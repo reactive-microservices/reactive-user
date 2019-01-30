@@ -17,6 +17,7 @@ public class UserVerticle extends AbstractVerticle {
 
     private static Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private static final String VERTEX_NAME = UserVerticle.class.getCanonicalName();
+    private static final String APPLICATION_JSON_TYPE = "application/json";
 
     private static final int PORT = 7070;
 
@@ -33,7 +34,7 @@ public class UserVerticle extends AbstractVerticle {
             JsonObject data = new JsonObject();
             data.put("status", "healthy");
             request.response().
-                    putHeader(HttpHeaders.CONTENT_TYPE, "application/json").
+                    putHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_TYPE).
                     end(data.encode());
         });
 
@@ -44,17 +45,15 @@ public class UserVerticle extends AbstractVerticle {
             Optional<UserDto> userDto = userDao.findUser(userName);
 
             if (userDto.isPresent()) {
-
                 JsonObject data = new JsonObject();
                 data.put("name", userDto.get().getName());
                 data.put("nickname", userDto.get().getNickName());
                 data.put("age", userDto.get().getAge());
                 data.put("thread", Thread.currentThread().getName());
                 data.put("hobbies", userDto.get().getHobbies());
-
                 request.response().
                         setStatusCode(200).
-                        putHeader(HttpHeaders.CONTENT_TYPE, "application/json").
+                        putHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_TYPE).
                         end(data.encode());
             }
             else {
@@ -62,7 +61,7 @@ public class UserVerticle extends AbstractVerticle {
                 errorMessage.put("message", "Can't find user with name " + userName);
                 request.response().
                         setStatusCode(404).
-                        putHeader(HttpHeaders.CONTENT_TYPE, "application/json").
+                        putHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_TYPE).
                         end(errorMessage.encode());
             }
         });
