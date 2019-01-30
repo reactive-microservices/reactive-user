@@ -1,6 +1,8 @@
 package com.max.reactive.user;
 
 import com.google.inject.Guice;
+import com.max.reactive.user.core.UserDao;
+import com.max.reactive.user.core.UserDto;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.JsonObject;

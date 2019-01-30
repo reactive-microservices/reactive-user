@@ -1,4 +1,4 @@
-package com.max.reactive.user;
+package com.max.reactive.user.core;
 
 import lombok.Value;
 

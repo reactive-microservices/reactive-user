@@ -1,6 +1,8 @@
-package com.max.reactive.user;
+package com.max.reactive.user.adapter;
 
 import com.google.inject.Singleton;
+import com.max.reactive.user.core.UserDao;
+import com.max.reactive.user.core.UserDto;
 
 import java.util.Arrays;
 import java.util.HashMap;
