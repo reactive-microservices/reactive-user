@@ -17,8 +17,18 @@ public class InMemoryUserDao implements UserDao {
     public InMemoryUserDao() {
         users.put("maksym", new UserDto("Maksym Stepanenko", "maksym", 33,
                                         Arrays.asList("jujutsu", "programming", "reading books")));
+
         users.put("olesia", new UserDto("Olesia Stepanenko", "olesia", 33,
                                         Arrays.asList("cooking", "snowboard")));
+
+        for(int i =0; i < 100; ++i){
+
+            String username = "other-" + i;
+
+            users.put(username, new UserDto(username, username, 100,
+                                            Arrays.asList("cooking", "snowboard")));
+        }
+
     }
 
     @Override
