@@ -29,6 +29,12 @@ Check service running:
 curl localhost:7070
 ```
 
+## Run in cluster using Infinispan in-memory data grid.
+
+```
+mvn compile vertx:run -Dvertx.runArgs="-cluster -Djava.net.preferIPv4Stack=true"
+```
+
 ## Related project
 
 https://github.com/redhat-developer/reactive-microservices-in-java

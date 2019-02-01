@@ -6,6 +6,7 @@ import com.max.reactive.user.core.UserDto;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.JsonObject;
+
 import io.vertx.ext.web.Router;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,10 +39,43 @@ public class UserVerticle extends AbstractVerticle {
                     end(data.encode());
         });
 
-        router.get("/user/:name").handler(request -> {
+        vertx.createHttpServer().requestHandler(router::accept).listen(PORT);
 
-            String userName = request.pathParam("name");
+//        router.get("/user/:name").handler(request -> {
+//
+//            String userName = request.pathParam("name");
+//
+//            Optional<UserDto> userDto = userDao.findUser(userName);
+//
+//            if (userDto.isPresent()) {
+//                JsonObject data = new JsonObject();
+//                data.put("name", userDto.get().getName());
+//                data.put("nickname", userDto.get().getNickName());
+//                data.put("age", userDto.get().getAge());
+//                data.put("thread", Thread.currentThread().getName());
+//                data.put("hobbies", userDto.get().getHobbies());
+//                request.response().
+//                        setStatusCode(200).
+//                        putHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_TYPE).
+//                        end(data.encode());
+//            }
+//            else {
+//                JsonObject errorMessage = new JsonObject();
+//                errorMessage.put("message", "Can't find user with name " + userName);
+//                request.response().
+//                        setStatusCode(404).
+//                        putHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_TYPE).
+//                        end(errorMessage.encode());
+//            }
+//        });
+//
 
+
+
+        vertx.eventBus().consumer("reactive-user/user", message -> {
+
+            String userName = (String)message.body();
+            
             Optional<UserDto> userDto = userDao.findUser(userName);
 
             if (userDto.isPresent()) {
@@ -51,22 +85,14 @@ public class UserVerticle extends AbstractVerticle {
                 data.put("age", userDto.get().getAge());
                 data.put("thread", Thread.currentThread().getName());
                 data.put("hobbies", userDto.get().getHobbies());
-                request.response().
-                        setStatusCode(200).
-                        putHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_TYPE).
-                        end(data.encode());
+                message.reply(data);
             }
             else {
                 JsonObject errorMessage = new JsonObject();
-                errorMessage.put("message", "Can't find user with name " + userName);
-                request.response().
-                        setStatusCode(404).
-                        putHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_TYPE).
-                        end(errorMessage.encode());
+                errorMessage.put("errorMessage", "Can't find user with name " + userName);
+                message.reply(errorMessage);
             }
         });
-
-        vertx.createHttpServer().requestHandler(router::accept).listen(PORT);
 
         LOG.info("{} started at port {}", VERTEX_NAME, PORT);
     }
