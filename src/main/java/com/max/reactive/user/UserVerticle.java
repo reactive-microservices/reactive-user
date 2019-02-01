@@ -6,7 +6,6 @@ import com.max.reactive.user.core.UserDto;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.JsonObject;
-
 import io.vertx.ext.web.Router;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +43,7 @@ public class UserVerticle extends AbstractVerticle {
 
         vertx.eventBus().consumer("reactive-user/user", message -> {
 
-            String userName = (String)message.body();
+            String userName = (String) message.body();
 
             Optional<UserDto> userDto = userDao.findUser(userName);
 

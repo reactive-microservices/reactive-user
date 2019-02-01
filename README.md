@@ -21,7 +21,7 @@ mvn compile vertx:run
 ```
 Using fat jar file:
 ```
-java -jar target/reactive-user-1.0.0-SNAPSHOT.jar
+java -jar target/reactive-user-1.0.0-SNAPSHOT.jar --cluster -Djava.net.preferIPv4Stack=true
 ```
 
 Check service running:
