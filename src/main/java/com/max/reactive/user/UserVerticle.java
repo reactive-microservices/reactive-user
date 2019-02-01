@@ -55,11 +55,13 @@ public class UserVerticle extends AbstractVerticle {
                 data.put("age", userDto.get().getAge());
                 data.put("thread", Thread.currentThread().getName());
                 data.put("hobbies", userDto.get().getHobbies());
+                data.put("served-by", this.toString());
                 message.reply(data);
             }
             else {
                 JsonObject errorMessage = new JsonObject();
                 errorMessage.put("errorMessage", "Can't find user with name " + userName);
+                errorMessage.put("served-by", this.toString());
                 message.reply(errorMessage);
             }
         });
