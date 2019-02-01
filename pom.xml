@@ -122,7 +122,6 @@
                                 <ignoredDependency>ch.qos.logback:logback-classic</ignoredDependency>
                                 <ignoredDependency>ch.qos.logback:logback-core</ignoredDependency>
                                 <ignoredDependency> org.projectlombok:lombok</ignoredDependency>
-                                <ignoredDependency>io.vertx:vertx-web</ignoredDependency>
                                 <ignoredDependency>io.vertx:vertx-infinispan</ignoredDependency>
                             </ignoredDependencies>
                         </configuration>

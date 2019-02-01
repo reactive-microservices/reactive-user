@@ -31,8 +31,9 @@ public class UserVerticle extends AbstractVerticle {
 
         Router router = Router.router(vertx);
 
-        router.get("/user/health").handler(request -> {
+        router.get("/health").handler(request -> {
             JsonObject data = new JsonObject();
+            data.put("service_name", "reactive_user");
             data.put("status", "healthy");
             request.response().
                     putHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_TYPE).
@@ -41,41 +42,10 @@ public class UserVerticle extends AbstractVerticle {
 
         vertx.createHttpServer().requestHandler(router::accept).listen(PORT);
 
-//        router.get("/user/:name").handler(request -> {
-//
-//            String userName = request.pathParam("name");
-//
-//            Optional<UserDto> userDto = userDao.findUser(userName);
-//
-//            if (userDto.isPresent()) {
-//                JsonObject data = new JsonObject();
-//                data.put("name", userDto.get().getName());
-//                data.put("nickname", userDto.get().getNickName());
-//                data.put("age", userDto.get().getAge());
-//                data.put("thread", Thread.currentThread().getName());
-//                data.put("hobbies", userDto.get().getHobbies());
-//                request.response().
-//                        setStatusCode(200).
-//                        putHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_TYPE).
-//                        end(data.encode());
-//            }
-//            else {
-//                JsonObject errorMessage = new JsonObject();
-//                errorMessage.put("message", "Can't find user with name " + userName);
-//                request.response().
-//                        setStatusCode(404).
-//                        putHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_TYPE).
-//                        end(errorMessage.encode());
-//            }
-//        });
-//
-
-
-
         vertx.eventBus().consumer("reactive-user/user", message -> {
 
             String userName = (String)message.body();
-            
+
             Optional<UserDto> userDto = userDao.findUser(userName);
 
             if (userDto.isPresent()) {
