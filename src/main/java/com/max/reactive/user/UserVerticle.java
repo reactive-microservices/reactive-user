@@ -47,9 +47,10 @@ public class UserVerticle extends AbstractVerticle {
 
         vertx.eventBus().consumer("reactive-user/user", message -> {
 
-//            normalFlow(message);
+            normalFlow(message);
 
-            faultyFlow(message);
+            //TODO: change flow here
+//            faultyFlow(message);
 
         });
 
@@ -79,7 +80,7 @@ public class UserVerticle extends AbstractVerticle {
                 message.fail(404, createErrorBody("Can't find user with name " + userName).encode());
             }
         }
-        else if(randomValue <= 6){
+        else if (randomValue <= 6) {
             // no reply
         }
         else {
