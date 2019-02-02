@@ -47,9 +47,9 @@ public class UserVerticle extends AbstractVerticle {
 
         vertx.eventBus().consumer("reactive-user/user", message -> {
 
-            normalFlow(message);
+//            normalFlow(message);
 
-//            faultyFlow(message);
+            faultyFlow(message);
 
         });
 
@@ -57,34 +57,35 @@ public class UserVerticle extends AbstractVerticle {
     }
 
     private void faultyFlow(Message<Object> message) {
-//        int randomValue = RAND.nextInt(10);
-//
-//        if (randomValue <= 4) {
-//            // success
-//            String userName = (String) message.body();
-//
-//            Optional<UserDto> userDto = userDao.findUser(userName);
-//
-//            if (userDto.isPresent()) {
-//                JsonObject data = new JsonObject();
-//                data.put("name", userDto.get().getName());
-//                data.put("nickname", userDto.get().getNickName());
-//                data.put("age", userDto.get().getAge());
-//                data.put("thread", Thread.currentThread().getName());
-//                data.put("hobbies", userDto.get().getHobbies());
-//                data.put("served-by", this.toString());
-//                message.reply(data);
-//            }
-//            else {
-//                message.fail(404, createErrorBody("Can't find user with name " + userName).encode());
-//            }
-//        }
-//        else {
-//            // no reply
-//
-//            //             // fail
-////            message.fail(500, createErrorBody("Some random failure").encode());
-//        }
+        int randomValue = RAND.nextInt(10);
+
+        if (randomValue <= 3) {
+            // success
+            String userName = (String) message.body();
+
+            Optional<UserDto> userDto = userDao.findUser(userName);
+
+            if (userDto.isPresent()) {
+                JsonObject data = new JsonObject();
+                data.put("name", userDto.get().getName());
+                data.put("nickname", userDto.get().getNickName());
+                data.put("age", userDto.get().getAge());
+                data.put("thread", Thread.currentThread().getName());
+                data.put("hobbies", userDto.get().getHobbies());
+                data.put("served-by", this.toString());
+                message.reply(data);
+            }
+            else {
+                message.fail(404, createErrorBody("Can't find user with name " + userName).encode());
+            }
+        }
+        else if(randomValue <= 6){
+            // no reply
+        }
+        else {
+            // failure
+            message.fail(500, createErrorBody("Some random failure").encode());
+        }
     }
 
     private void normalFlow(Message<Object> message) {
