@@ -81,11 +81,11 @@ public class UserVerticle extends AbstractVerticle {
             }
         }
         else if (randomValue <= 6) {
-            // no reply
-        }
-        else {
             // failure
             message.fail(500, createErrorBody("Some random failure").encode());
+        }
+        else {
+            // no reply at all
         }
     }
 
